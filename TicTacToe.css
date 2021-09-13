@@ -1,0 +1,21 @@
+#container{
+    display: flex;
+    margin: auto;
+    flex-wrap: wrap;
+    height: 100px;
+    width: 400px;
+}
+
+.case{
+    height: 100px;
+    width: 100px;
+    padding: 10px;
+    border: solid black 1px; 
+}
+
+span{
+    height: 50px;
+    width: 50px;
+    margin: 30px;
+    font-size: 80px;
+}
