@@ -18,7 +18,7 @@ const displayController = (() => {
 
     const printBoardContent = () => {
         for(let currentCase of gridCase){
-            currentCase.style.backgroundColor = "red";
+            currentCase
         }
     } 
     
