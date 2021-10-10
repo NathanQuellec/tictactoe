@@ -1,33 +1,41 @@
 //module
-const gameBoard = (() => {
-    'use strict';
-    let board = ['o', 'x', 'o','x', 'o', 'o','o', 'x', 'o'];
-
-    const addMarksToBoard = (marks, index) => {
-        board[index] = marks;
-    }
-
-    return {board, addMarksToBoard};
-})();
 
 const displayController = (() => {
     'use strict';
-    const gridCase = document.querySelectorAll(".case");
-    const currentBoard = gameBoard.board;
+    const clickOnCase = (e) => {
 
-    const clickOnCase = () => {
+        let currentCase = e.target;
 
+        if(currentCase.innerHTML == ''){
+            currentCase.innerHTML = 'O';
+            console.log('check');
+            gameBoard.addMarksToBoard('O', currentCase.id);
+        }  
     }
 
-    const printBoardContent = () => {
+    return {clickOnCase};
+})();
 
+
+const gameBoard = (() => {
+
+    'use strict';
+
+    const gridCase = document.querySelectorAll(".case");
+    let board = ['', '', '','', '', '','', '', ''];
+
+    const addMarksToBoard = (mark, index) => {
+        board[index] = mark;
+    }
+
+    const createBoard = () => {
         for(let i = 0; i < 9; i++){
-            gridCase[i].innerHTML = currentBoard[i];
-            gridCase[i].addEventListener("click", clickOnCase);
+            gridCase[i].innerHTML = board[i];
+            gridCase[i].addEventListener("click", displayController.clickOnCase);
         }
     }
-    
-    return {printBoardContent};
+
+    return {createBoard, addMarksToBoard};
 })();
 
 //factory
@@ -36,4 +44,4 @@ const player = (name) => {
 };
 
 
-displayController.printBoardContent();
+gameBoard.createBoard();
