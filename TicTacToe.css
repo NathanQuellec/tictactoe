@@ -1,9 +1,18 @@
 #container{
     display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    height: 500px;
+    width: 400px;
+}
+
+#grid{
+    display: flex;
     margin: auto;
     flex-wrap: wrap;
     height: 100px;
     width: 400px;
+    margin-bottom: 350px;
 }
 
 .case{
@@ -16,5 +25,25 @@
 }
 
 .case:hover{
+    box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.5);
+}
+
+#message{
+    margin: auto;
+    height: 20px;
+    font-size: large;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+#restart{
+   margin: auto; 
+   height: 30px;
+   width: 70px;
+   font-family: fantasy;
+   border-radius: 10%;
+   background-color: blanchedalmond;  
+}
+
+#restart:hover{
     box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.5);
 }
