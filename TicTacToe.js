@@ -10,6 +10,11 @@ const gameFlow = (() => {
         otherPlayer = p2;     
         endOfGame = false;
     }
+    
+    const restartGame = () => {
+        endOfGame = false;
+        gameBoard.clearBoard();
+    }
 
     const changePlayer = () => {
         tmp = currentPlayer;
@@ -34,52 +39,66 @@ const gameFlow = (() => {
             return "";
     }
 
+    
+
     const getCurrentPlayer = () => currentPlayer;
     
-    return {startGame, changePlayer, getCurrentPlayer, resultOfGame, getGameState};
-})()
+    return {startGame, restartGame, changePlayer, getCurrentPlayer, resultOfGame, getGameState};
+})();
 
 const displayController = (() => {
     'use strict';
+    const gridCase = document.querySelectorAll(".case");
     const message = document.querySelector("#message");
     const restart = document.querySelector("#restart");
 
-    const createEvent = () => {
-        restart.addEventListener("click", gameBoard.clearBoard);
+    const restartEvent = () => {
+        restart.addEventListener("click", gameFlow.restartGame);
     }
 
     const clickOnCase = (e) => {
 
-        let currentCase = e.target;
-        let markOfPlayer = gameFlow.getCurrentPlayer().getMark();
+            let currentCase = e.target;
+            let markOfPlayer = gameFlow.getCurrentPlayer().getMark();
 
-        if(currentCase.innerHTML == '' && gameFlow.getGameState() == false ){
-            currentCase.innerHTML = markOfPlayer;
-            console.log('check ' + markOfPlayer);
-            gameBoard.addMarksToBoard(markOfPlayer, currentCase.id);
-            message.innerHTML = gameFlow.resultOfGame();
-            gameFlow.changePlayer();
-        }  
+            if(currentCase.innerHTML == '' && gameFlow.getGameState() == false ){
+                currentCase.innerHTML = markOfPlayer;
+                console.log('check ' + markOfPlayer);
+                gameBoard.addMarksToBoard(markOfPlayer, currentCase.id);
+                message.innerHTML = gameFlow.resultOfGame();
+                gameFlow.changePlayer();
+            }  
+    }
+    
+    const createBoard = () => {
+        for(let i = 0; i < 9; i++){
+            gridCase[i].innerHTML = gameBoard.board[i];
+            gridCase[i].addEventListener("click", clickOnCase);
+        }
     }
 
-    return {clickOnCase, createEvent};
+    const clearDisplay = () => {
+        for(let i = 0; i < 9; i++){
+            gridCase[i].innerHTML = "";
+        }
+    }
+
+
+    return {clickOnCase, createBoard, clearDisplay, restartEvent};
 })();
 
 
 const gameBoard = (() => {
     'use strict';
-    const gridCase = document.querySelectorAll(".case");
     let board = ['', '', '','', '', '','', '', ''];
 
     const addMarksToBoard = (mark, index) => {
         board[index] = mark;
     }
 
-    const createBoard = () => {
-        for(let i = 0; i < 9; i++){
-            gridCase[i].innerHTML = board[i];
-            gridCase[i].addEventListener("click", displayController.clickOnCase);
-        }
+    const clearBoard = () => {
+        board = ['', '', '','', '', '','', '', ''];
+        displayController.clearDisplay();
     }
 
     const rowWin = () => {
@@ -121,15 +140,7 @@ const gameBoard = (() => {
         return true;
     }
 
-    const clearBoard = () => {
-        board = ['', '', '','', '', '','', '', ''];
-       
-        for(let i = 0; i < 9; i++){
-            gridCase[i].innerHTML = "";
-        }
-    }
-
-    return {createBoard, addMarksToBoard, rowWin, colWin, diagWin, boardIsFull, clearBoard};
+    return {board, addMarksToBoard, clearBoard, rowWin, colWin, diagWin, boardIsFull};
 })();
 
 //factory
@@ -142,10 +153,10 @@ const playerFactory = (name, mark) => {
 };
 
 
-gameBoard.createBoard();    
-displayController.createEvent();
+displayController.createBoard();    
+//
 const player1 = playerFactory("Nathan", "X");
 const player2 = playerFactory("Test", "O");
 gameFlow.startGame(player1, player2);
-
+displayController.restartEvent();
 
